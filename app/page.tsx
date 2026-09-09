@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { Navbar } from "@/components/sections/Navbar";
 import { HeroSection } from "@/components/sections/HeroSection";
+import { HomeExplorer } from "@/components/sections/HomeExplorer";
 import { ServicesSection } from "@/components/sections/ServicesSection";
 import { NearbyKaamigarSection } from "@/components/sections/NearbyKaamigarSection";
 import { HowItWorksSection } from "@/components/sections/HowItWorksSection";
@@ -26,18 +27,12 @@ export default function HomePage() {
   const [proModalOpen, setProModalOpen] = useState(false);
   const [voiceModalOpen, setVoiceModalOpen] = useState(false);
   const [profileModalOpen, setProfileModalOpen] = useState(false);
-
   const [selectedPro, setSelectedPro] = useState<Professional | null>(null);
   const [selectedService, setSelectedService] = useState<ServiceCategory | null>(null);
 
   const handleOpenBooking = (pro?: Professional, serviceId?: string) => {
     setSelectedPro(pro || null);
-    if (serviceId) {
-      const found = SERVICES.find((s) => s.id === serviceId);
-      setSelectedService(found || null);
-    } else {
-      setSelectedService(null);
-    }
+    setSelectedService(serviceId ? SERVICES.find((s) => s.id === serviceId) || null : null);
     setBookingModalOpen(true);
   };
 
@@ -54,20 +49,15 @@ export default function HomePage() {
 
   const handleSearch = (query: string, location: string) => {
     const lower = query.toLowerCase().trim();
-    const matchedService = SERVICES.find(
-      (s) =>
-        s.name.toLowerCase().includes(lower) ||
-        s.hindiName.toLowerCase().includes(lower) ||
-        s.id.toLowerCase().includes(lower)
+    const matchedService = SERVICES.find((s) =>
+      s.name.toLowerCase().includes(lower) || s.hindiName.toLowerCase().includes(lower) || s.id.toLowerCase().includes(lower)
     );
     setSelectedService(matchedService || null);
     setSelectedPro(null);
     setBookingModalOpen(true);
   };
 
-  const handleVoiceResult = (query: string) => {
-    handleSearch(query, "");
-  };
+  const handleVoiceResult = (query: string) => handleSearch(query, "");
 
   return (
     <main className="min-h-screen bg-background text-foreground selection:bg-brand-orange selection:text-white relative">
@@ -82,59 +72,25 @@ export default function HomePage() {
         onVoiceClick={() => setVoiceModalOpen(true)}
         onBookClick={(catId) => handleOpenBooking(undefined, catId)}
         onJoinProClick={() => setProModalOpen(true)}
-        onSelectCategory={(catId) => {
-          const el = document.getElementById("services");
-          if (el) el.scrollIntoView({ behavior: "smooth" });
-        }}
+        onSelectCategory={() => document.getElementById("home-explorer")?.scrollIntoView({ behavior: "smooth" })}
       />
 
+      <HomeExplorer onBookClick={(serviceId) => handleOpenBooking(undefined, serviceId)} />
       <ServicesSection onSelectService={handleSelectService} />
-
-      <NearbyKaamigarSection
-        onSelectPro={handleOpenProfile}
-        onBookPro={(pro) => handleOpenBooking(pro)}
-      />
-
+      <NearbyKaamigarSection onSelectPro={handleOpenProfile} onBookPro={(pro) => handleOpenBooking(pro)} />
       <HowItWorksSection />
       <TrustSection />
       <WorkerSection onJoinClick={() => setProModalOpen(true)} />
       <AppPreviewSection onBookClick={() => handleOpenBooking()} />
       <FAQSection />
 
-      <FinalCTASection
-        onBookClick={() => handleOpenBooking()}
-        onJoinProClick={() => setProModalOpen(true)}
-      />
+      <FinalCTASection onBookClick={() => handleOpenBooking()} onJoinProClick={() => setProModalOpen(true)} />
+      <Footer onBookClick={() => handleOpenBooking()} onJoinProClick={() => setProModalOpen(true)} />
 
-      <Footer
-        onBookClick={() => handleOpenBooking()}
-        onJoinProClick={() => setProModalOpen(true)}
-      />
-
-      <BookingModal
-        isOpen={bookingModalOpen}
-        onClose={() => setBookingModalOpen(false)}
-        selectedPro={selectedPro}
-        initialService={selectedService}
-      />
-
-      <ProRegisterModal
-        isOpen={proModalOpen}
-        onClose={() => setProModalOpen(false)}
-      />
-
-      <VoiceSearchModal
-        isOpen={voiceModalOpen}
-        onClose={() => setVoiceModalOpen(false)}
-        onVoiceResult={handleVoiceResult}
-      />
-
-      <WorkerProfileModal
-        isOpen={profileModalOpen}
-        onClose={() => setProfileModalOpen(false)}
-        pro={selectedPro}
-        onBookNow={(pro) => handleOpenBooking(pro)}
-      />
+      <BookingModal isOpen={bookingModalOpen} onClose={() => setBookingModalOpen(false)} selectedPro={selectedPro} initialService={selectedService} />
+      <ProRegisterModal isOpen={proModalOpen} onClose={() => setProModalOpen(false)} />
+      <VoiceSearchModal isOpen={voiceModalOpen} onClose={() => setVoiceModalOpen(false)} onVoiceResult={handleVoiceResult} />
+      <WorkerProfileModal isOpen={profileModalOpen} onClose={() => setProfileModalOpen(false)} pro={selectedPro} onBookNow={(pro) => handleOpenBooking(pro)} />
     </main>
   );
 }
