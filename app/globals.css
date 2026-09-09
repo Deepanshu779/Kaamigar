@@ -5,156 +5,164 @@
 :root {
   --background: #0B1325;
   --foreground: #F8FAFC;
+  --surface: #101B33;
+  --surface-soft: #0B1325;
+  --surface-muted: #111C31;
+  --border: #1E293B;
   --font-sans: 'Noto Sans Devanagari', 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 html.light {
-  --background: #F8FAFC;
+  --background: #F7F9FC;
   --foreground: #0F172A;
+  --surface: #FFFFFF;
+  --surface-soft: #F7F9FC;
+  --surface-muted: #EEF2F7;
+  --border: #E2E8F0;
   color-scheme: light;
 }
 
 html.dark {
   --background: #0B1325;
   --foreground: #F8FAFC;
+  --surface: #101B33;
+  --surface-soft: #0B1325;
+  --surface-muted: #111C31;
+  --border: #1E293B;
   color-scheme: dark;
 }
 
-* {
-  box-sizing: border-box;
-}
-
-html {
-  scroll-behavior: smooth;
-}
-
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
 body {
   background-color: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans);
   overflow-x: hidden;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition: background-color 0.35s ease, color 0.35s ease;
 }
 
-::selection {
-  background: #FF6B2B;
-  color: #FFFFFF;
+::selection { background: #FF6B2B; color: #FFFFFF; }
+
+/* Theme-aware reusable surfaces */
+.glass-panel,
+.glass-panel-elevated,
+.glass-card-interactive {
+  transition: background-color 0.35s ease, border-color 0.35s ease, color 0.35s ease, box-shadow 0.35s ease;
 }
 
-/* Glassmorphism primitives for Dark Mode */
 .dark .glass-panel {
   background: rgba(15, 23, 42, 0.7);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255,255,255,0.08);
 }
-
 .dark .glass-panel-elevated {
   background: rgba(15, 23, 42, 0.88);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(255,255,255,0.12);
+  box-shadow: 0 20px 40px -15px rgba(0,0,0,0.6);
 }
-
 .dark .glass-card-interactive {
-  background: rgba(15, 23, 42, 0.65);
+  background: rgba(15,23,42,0.65);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  border: 1px solid rgba(255,255,255,0.08);
 }
-
 .dark .glass-card-interactive:hover {
-  background: rgba(22, 34, 62, 0.8);
-  border-color: rgba(255, 107, 43, 0.4);
+  background: rgba(22,34,62,0.8);
+  border-color: rgba(255,107,43,0.4);
   transform: translateY(-4px);
-  box-shadow: 0 16px 36px -10px rgba(255, 107, 43, 0.15);
+  box-shadow: 0 16px 36px -10px rgba(255,107,43,0.15);
 }
 
-/* Crisp Clean Primitives for Light Mode (Urban Company / Pronto Style) */
 .light .glass-panel {
-  background: rgba(255, 255, 255, 0.92);
+  background: rgba(255,255,255,0.94);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(226, 232, 240, 0.9);
-  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(226,232,240,0.95);
+  box-shadow: 0 4px 20px -2px rgba(15,23,42,0.06);
 }
-
 .light .glass-panel-elevated {
   background: #FFFFFF;
-  border: 1px solid rgba(226, 232, 240, 1);
-  box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.08), 0 0 1px rgba(0, 0, 0, 0.06);
+  border: 1px solid #E2E8F0;
+  box-shadow: 0 15px 35px -5px rgba(15,23,42,0.08);
 }
-
 .light .glass-card-interactive {
   background: #FFFFFF;
   border: 1px solid #E2E8F0;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 2px 8px rgba(15,23,42,0.04);
 }
-
 .light .glass-card-interactive:hover {
   background: #FFFFFF;
   border-color: #FF6B2B;
   transform: translateY(-4px);
-  box-shadow: 0 16px 32px -8px rgba(255, 107, 43, 0.12), 0 0 0 1px rgba(255, 107, 43, 0.2);
+  box-shadow: 0 16px 32px -8px rgba(255,107,43,0.12), 0 0 0 1px rgba(255,107,43,0.2);
 }
 
-/* Custom subtle scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
+/* Force legacy hard-coded dark surfaces to become proper light surfaces. */
+html.light [class*="bg-[#0B1325]"],
+html.light [class*="bg-[#070D1A]"],
+html.light [class*="bg-[#060B17]"],
+html.light [class*="bg-[#101B33]"],
+html.light [class*="bg-[#0A1022]"],
+html.light [class*="bg-[#0A0F1D]"] {
+  background-color: var(--surface) !important;
+  color: var(--foreground);
 }
 
-.dark ::-webkit-scrollbar-track {
-  background: #080C16;
-}
-.dark ::-webkit-scrollbar-thumb {
-  background: #1E293B;
-  border-radius: 4px;
-}
-
-.light ::-webkit-scrollbar-track {
-  background: #F1F5F9;
-}
-.light ::-webkit-scrollbar-thumb {
-  background: #CBD5E1;
-  border-radius: 4px;
+html.light [class*="from-[#0B1325]"],
+html.light [class*="from-[#101B33]"],
+html.light [class*="from-[#0A1022]"],
+html.light [class*="to-[#101B33]"],
+html.light [class*="to-[#0A1022]"] {
+  background-image: none !important;
+  background-color: var(--surface) !important;
 }
 
-/* Background grid pattern */
+/* The worker CTA is intentionally dark in dark mode, but becomes a clean light card. */
+html.light [class*="from-[#101B33]"][class*="text-white"] {
+  color: var(--foreground) !important;
+  border-color: #E2E8F0 !important;
+  box-shadow: 0 16px 40px rgba(15,23,42,0.08) !important;
+}
+
+/* Phone preview should follow the selected site theme too. */
+html.light [class*="bg-[#0A0F1D]"] {
+  background-color: #FFFFFF !important;
+  border-color: #E2E8F0 !important;
+}
+
+/* Keep dark-only decorative effects subtle in light mode. */
+html.light [class*="shadow-2xl"] { --tw-shadow-color: rgba(15,23,42,0.08); }
+
+::-webkit-scrollbar { width: 8px; }
+.dark ::-webkit-scrollbar-track { background: #080C16; }
+.dark ::-webkit-scrollbar-thumb { background: #1E293B; border-radius: 4px; }
+.light ::-webkit-scrollbar-track { background: #F1F5F9; }
+.light ::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 4px; }
+
 .dark .bg-grid-pattern {
   background-size: 40px 40px;
-  background-image: 
-    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-image: linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px);
 }
-
 .light .bg-grid-pattern {
   background-size: 40px 40px;
-  background-image: 
-    linear-gradient(to right, rgba(0, 0, 0, 0.04) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
+  background-image: linear-gradient(to right, rgba(15,23,42,0.04) 1px, transparent 1px), linear-gradient(to bottom, rgba(15,23,42,0.04) 1px, transparent 1px);
 }
 
-/* Gradient text utilities */
 .text-gradient-orange {
-  background: linear-gradient(135deg, #FF844B 0%, #FF6B2B 50%, #E05316 100%);
+  background: linear-gradient(135deg,#FF844B 0%,#FF6B2B 50%,#E05316 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
-
 .text-gradient-blue {
-  background: linear-gradient(135deg, #3B82F6 0%, #2563EB 50%, #1D4ED8 100%);
+  background: linear-gradient(135deg,#3B82F6 0%,#2563EB 50%,#1D4ED8 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  * {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
+  * { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
 }
