@@ -4,13 +4,12 @@ import React, { useState } from "react";
 import { PROFESSIONALS, Professional } from "@/lib/data/professionals";
 import { useI18n } from "@/lib/i18n";
 import {
-  Star,
-  MapPin,
-  CheckCircle2,
-  ShieldCheck,
-  Phone,
   ArrowRight,
-  UserCheck,
+  BadgeCheck,
+  Clock3,
+  MapPin,
+  ShieldCheck,
+  Star,
 } from "lucide-react";
 
 interface NearbyKaamigarSectionProps {
@@ -26,155 +25,169 @@ export function NearbyKaamigarSection({
   const [selectedTrade, setSelectedTrade] = useState<string>("all");
 
   const trades = [
-    { id: "all", label: lang === "en" ? "All Workers" : "सभी कामगार" },
-    { id: "Plumber", label: lang === "en" ? "Plumber" : "प्लंबर" },
-    { id: "Electrician", label: lang === "en" ? "Electrician" : "इलेक्ट्रीशियन" },
-    { id: "Carpenter", label: lang === "en" ? "Carpenter" : "कारपेंटर" },
+    { id: "all", label: lang === "en" ? "All" : "सभी" },
+    { id: "Plumber", label: lang === "en" ? "Plumbers" : "प्लंबर" },
+    { id: "Electrician", label: lang === "en" ? "Electricians" : "इलेक्ट्रीशियन" },
+    { id: "Carpenter", label: lang === "en" ? "Carpenters" : "कारपेंटर" },
     { id: "Cleaning", label: lang === "en" ? "Cleaning" : "सफ़ाई" },
-    { id: "AC Repair", label: lang === "en" ? "AC Repair" : "एसी" },
+    { id: "AC Repair", label: lang === "en" ? "AC repair" : "एसी रिपेयर" },
   ];
 
   const filteredPros =
     selectedTrade === "all"
       ? PROFESSIONALS
-      : PROFESSIONALS.filter((p) => p.service.toLowerCase().includes(selectedTrade.toLowerCase()));
+      : PROFESSIONALS.filter((p) =>
+          p.service.toLowerCase().includes(selectedTrade.toLowerCase())
+        );
 
   return (
-    <section id="nearby-workers" className="py-16 sm:py-20 relative bg-white dark:bg-[#0B1325]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
-          <div className="space-y-2">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 dark:bg-emerald-950/80 text-emerald-700 dark:text-emerald-400 text-xs font-bold border border-emerald-200 dark:border-emerald-800">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              <span>{lang === "en" ? "Live in Sector 14" : "सेक्टर 14 में अभी उपलब्ध"}</span>
+    <section
+      id="nearby-workers"
+      className="relative overflow-hidden bg-slate-50 py-20 dark:bg-[#0B1325] sm:py-24"
+    >
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="mb-10 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+          <div className="max-w-2xl">
+            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-bold text-slate-600 shadow-sm dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300">
+              <MapPin className="h-3.5 w-3.5 text-brand-orange" />
+              {lang === "en" ? "Available near you" : "आपके आसपास उपलब्ध"}
             </div>
-            <h2 className="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white tracking-tight">
-              {t("nearby.heading")}
+            <h2 className="text-3xl font-black tracking-tight text-slate-950 dark:text-white sm:text-4xl">
+              {lang === "en" ? "Find the right person for the job." : "काम के लिए सही कामिगार खोजें।"}
             </h2>
-            <p className="text-sm text-slate-600 dark:text-slate-400 max-w-xl">
-              {t("nearby.subheading")}
+            <p className="mt-3 max-w-xl text-sm leading-6 text-slate-600 dark:text-slate-400 sm:text-base">
+              {lang === "en"
+                ? "Compare local professionals by service, rating and distance before you book."
+                : "बुक करने से पहले स्थानीय कामिगारों की सेवा, रेटिंग और दूरी की तुलना करें।"}
             </p>
           </div>
 
-          {/* Trade filter buttons */}
-          <div className="flex flex-wrap gap-1.5">
-            {trades.map((tItem) => (
-              <button
-                key={tItem.id}
-                onClick={() => setSelectedTrade(tItem.id)}
-                className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all ${
-                  selectedTrade === tItem.id
-                    ? "bg-brand-orange text-white shadow"
-                    : "bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700"
-                }`}
-              >
-                {tItem.label}
-              </button>
-            ))}
-          </div>
+          <button
+            type="button"
+            className="hidden items-center gap-2 text-sm font-bold text-slate-700 transition-colors hover:text-brand-orange dark:text-slate-300 dark:hover:text-orange-400 sm:inline-flex"
+          >
+            {lang === "en" ? "View all Kaamigars" : "सभी कामिगार देखें"}
+            <ArrowRight className="h-4 w-4" />
+          </button>
         </div>
 
-        {/* Worker Cards Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {filteredPros.map((pro) => (
-            <div
-              key={pro.id}
-              className="p-5 sm:p-6 rounded-3xl bg-slate-50 dark:bg-[#101B33] border-2 border-slate-200/80 dark:border-slate-800 hover:border-brand-orange dark:hover:border-brand-orange transition-all hover:shadow-lg flex flex-col justify-between"
+        <div className="mb-7 flex gap-2 overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          {trades.map((trade) => (
+            <button
+              key={trade.id}
+              type="button"
+              onClick={() => setSelectedTrade(trade.id)}
+              className={`shrink-0 rounded-full border px-4 py-2 text-xs font-bold transition-all ${
+                selectedTrade === trade.id
+                  ? "border-slate-900 bg-slate-900 text-white dark:border-white dark:bg-white dark:text-slate-900"
+                  : "border-slate-200 bg-white text-slate-600 hover:border-slate-300 hover:text-slate-900 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300 dark:hover:border-slate-700 dark:hover:text-white"
+              }`}
             >
-              <div>
-                {/* Header: Name + Trade Emoji + Status */}
-                <div className="flex items-start justify-between gap-3 mb-3">
-                  <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-2xl bg-orange-100 dark:bg-orange-950/70 border border-orange-200 dark:border-orange-800 flex items-center justify-center text-2xl flex-shrink-0">
-                      {pro.serviceEmoji}
-                    </div>
-                    <div>
-                      <div className="flex items-center gap-1.5">
-                        <h3 className="text-base sm:text-lg font-black text-slate-900 dark:text-white">
-                          {lang === "en" ? pro.name : pro.hindiName}
-                        </h3>
-                        {pro.verified && (
-                          <span title="Aadhaar Verified">
-                            <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-                          </span>
-                        )}
-                      </div>
-                      <div className="text-xs font-bold text-brand-orange">
-                        {lang === "en" ? pro.service : pro.hindiService}
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Available pill */}
-                  <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-100 dark:bg-emerald-950/80 text-emerald-700 dark:text-emerald-300 text-[11px] font-bold border border-emerald-200 dark:border-emerald-800">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping" />
-                    <span>{t("nearby.available")}</span>
-                  </span>
-                </div>
-
-                {/* Subcategory / Specialty */}
-                <p className="text-xs text-slate-600 dark:text-slate-400 mb-4 line-clamp-1">
-                  {lang === "en" ? pro.subCategory : pro.hindiSubCategory}
-                </p>
-
-                {/* Meta stats: Rating, Distance, Completed jobs */}
-                <div className="grid grid-cols-3 gap-2 p-2.5 rounded-2xl bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 text-center mb-4">
-                  <div>
-                    <div className="flex items-center justify-center gap-1 text-xs font-black text-slate-800 dark:text-slate-100">
-                      <Star className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
-                      <span>{pro.rating}</span>
-                    </div>
-                    <div className="text-[10px] text-slate-400">रेटिंग / Rating</div>
-                  </div>
-
-                  <div className="border-x border-slate-100 dark:border-slate-800">
-                    <div className="flex items-center justify-center gap-1 text-xs font-black text-slate-800 dark:text-slate-100">
-                      <MapPin className="w-3.5 h-3.5 text-blue-500" />
-                      <span>{pro.distanceKm} km</span>
-                    </div>
-                    <div className="text-[10px] text-slate-400">{t("nearby.distance")}</div>
-                  </div>
-
-                  <div>
-                    <div className="text-xs font-black text-emerald-600 dark:text-emerald-400">
-                      {pro.totalJobs}+
-                    </div>
-                    <div className="text-[10px] text-slate-400">{lang === "en" ? "Jobs" : "काम किए"}</div>
-                  </div>
-                </div>
-
-                {/* Verification badges */}
-                <div className="flex flex-wrap gap-1.5 mb-4">
-                  {(lang === "en" ? pro.badges : pro.hindiBadges).map((b, idx) => (
-                    <span
-                      key={idx}
-                      className="text-[10px] font-semibold px-2 py-0.5 rounded-md bg-slate-200/70 dark:bg-slate-800 text-slate-700 dark:text-slate-300"
-                    >
-                      ✓ {b}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              {/* Action Buttons */}
-              <div className="grid grid-cols-2 gap-2 pt-2 border-t border-slate-200/80 dark:border-slate-800">
-                <button
-                  onClick={() => onSelectPro(pro)}
-                  className="py-2.5 px-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 hover:border-brand-orange text-xs font-bold text-slate-800 dark:text-slate-100 transition-colors text-center"
-                >
-                  {t("nearby.viewProfile")}
-                </button>
-                <button
-                  onClick={() => onBookPro(pro)}
-                  className="py-2.5 px-3 rounded-xl bg-brand-orange hover:bg-orange-600 text-white text-xs font-bold shadow transition-colors flex items-center justify-center gap-1"
-                >
-                  <span>{t("nearby.book")}</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </button>
-              </div>
-            </div>
+              {trade.label}
+            </button>
           ))}
+        </div>
+
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+          {filteredPros.slice(0, 6).map((pro) => (
+            <article
+              key={pro.id}
+              className="group rounded-3xl border border-slate-200 bg-white p-5 transition-all duration-200 hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-xl dark:border-slate-800 dark:bg-slate-900/70 dark:hover:border-slate-700"
+            >
+              <div className="flex items-start gap-4">
+                <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-orange-50 text-2xl ring-1 ring-orange-100 dark:bg-orange-950/30 dark:ring-orange-900/50">
+                  {pro.serviceEmoji}
+                </div>
+
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="min-w-0">
+                      <h3 className="truncate text-base font-black text-slate-950 dark:text-white">
+                        {lang === "en" ? pro.name : pro.hindiName}
+                      </h3>
+                      <p className="mt-0.5 truncate text-xs font-bold text-brand-orange">
+                        {lang === "en" ? pro.service : pro.hindiService}
+                      </p>
+                    </div>
+                    {pro.verified && (
+                      <span
+                        title="Verified profile"
+                        className="shrink-0 rounded-full bg-blue-50 p-1.5 text-blue-600 dark:bg-blue-950/40 dark:text-blue-400"
+                      >
+                        <BadgeCheck className="h-4 w-4" />
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              <p className="mt-4 line-clamp-1 text-xs text-slate-500 dark:text-slate-400">
+                {lang === "en" ? pro.subCategory : pro.hindiSubCategory}
+              </p>
+
+              <div className="mt-4 grid grid-cols-3 divide-x divide-slate-200 rounded-2xl border border-slate-200 bg-slate-50 py-3 dark:divide-slate-800 dark:border-slate-800 dark:bg-slate-950/50">
+                <div className="text-center">
+                  <div className="flex items-center justify-center gap-1 text-sm font-black text-slate-900 dark:text-white">
+                    <Star className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />
+                    {pro.rating}
+                  </div>
+                  <div className="mt-0.5 text-[10px] text-slate-400">Rating</div>
+                </div>
+                <div className="text-center">
+                  <div className="flex items-center justify-center gap-1 text-sm font-black text-slate-900 dark:text-white">
+                    <MapPin className="h-3.5 w-3.5 text-blue-500" />
+                    {pro.distanceKm} km
+                  </div>
+                  <div className="mt-0.5 text-[10px] text-slate-400">Distance</div>
+                </div>
+                <div className="text-center">
+                  <div className="flex items-center justify-center gap-1 text-sm font-black text-slate-900 dark:text-white">
+                    <Clock3 className="h-3.5 w-3.5 text-emerald-500" />
+                    {lang === "en" ? "Available" : "उपलब्ध"}
+                  </div>
+                  <div className="mt-0.5 text-[10px] text-slate-400">Status</div>
+                </div>
+              </div>
+
+              <div className="mt-4 flex items-center justify-between gap-3">
+                <div className="flex items-center gap-1.5 text-[11px] font-semibold text-slate-500 dark:text-slate-400">
+                  <ShieldCheck className="h-3.5 w-3.5 text-emerald-600" />
+                  <span>{lang === "en" ? "Profile verified" : "प्रोफ़ाइल सत्यापित"}</span>
+                </div>
+                <span className="text-xs font-bold text-slate-500 dark:text-slate-400">
+                  {pro.totalJobs}+ {lang === "en" ? "jobs" : "काम"}
+                </span>
+              </div>
+
+              <div className="mt-5 grid grid-cols-[1fr_1.2fr] gap-2">
+                <button
+                  type="button"
+                  onClick={() => onSelectPro(pro)}
+                  className="rounded-xl border border-slate-200 px-3 py-2.5 text-xs font-bold text-slate-700 transition-colors hover:border-slate-300 hover:bg-slate-50 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800"
+                >
+                  {lang === "en" ? "View profile" : "प्रोफ़ाइल देखें"}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => onBookPro(pro)}
+                  className="flex items-center justify-center gap-1.5 rounded-xl bg-brand-orange px-3 py-2.5 text-xs font-bold text-white shadow-sm transition-colors hover:bg-orange-600"
+                >
+                  {lang === "en" ? "Book now" : "अभी बुक करें"}
+                  <ArrowRight className="h-3.5 w-3.5" />
+                </button>
+              </div>
+            </article>
+          ))}
+        </div>
+
+        <div className="mt-7 text-center sm:hidden">
+          <button
+            type="button"
+            className="inline-flex items-center gap-2 text-sm font-bold text-slate-700 dark:text-slate-300"
+          >
+            {lang === "en" ? "View all Kaamigars" : "सभी कामिगार देखें"}
+            <ArrowRight className="h-4 w-4" />
+          </button>
         </div>
       </div>
     </section>
