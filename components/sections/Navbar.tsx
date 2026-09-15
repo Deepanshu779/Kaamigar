@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { useI18n, Language } from "@/lib/i18n";
 import { Menu, X, LogIn, ChevronDown } from "lucide-react";
@@ -37,16 +38,16 @@ export function Navbar({ onBookClick, onJoinProClick, onLoginClick }: NavbarProp
 
   return (
     <header className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${scrolled ? "border-b border-slate-200/80 bg-white/95 shadow-sm backdrop-blur-xl" : "bg-white/90 backdrop-blur-md"}`}>
-      <div className="mx-auto flex h-[68px] max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        <Link href="/" className="flex shrink-0 items-center gap-2.5">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand-orange text-lg font-black text-white shadow-sm shadow-orange-500/20">क</div>
-          <div className="leading-none">
-            <div className="flex items-center gap-1.5">
-              <span className="text-[19px] font-black tracking-[-0.03em] text-slate-950">KAAMIGAR</span>
-              <span className="hidden rounded-md bg-orange-50 px-1.5 py-1 text-[9px] font-extrabold text-brand-orange sm:inline">कामिगार</span>
-            </div>
-            <span className="mt-1 block text-[10px] font-semibold text-slate-500">{lang === "hi" ? "काम है? कामिगार है।" : "Local help. Made simple."}</span>
-          </div>
+      <div className="mx-auto flex h-[72px] max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+        <Link href="/" className="flex shrink-0 items-center" aria-label="Kaamigar home">
+          <Image
+            src="/kaamigar-logo.png"
+            alt="Kaamigar - Trusted People. Local Work. Happier Homes."
+            width={190}
+            height={64}
+            priority
+            className="h-auto w-[150px] object-contain sm:w-[175px] lg:w-[190px]"
+          />
         </Link>
 
         <nav className="hidden items-center gap-0.5 lg:flex">
