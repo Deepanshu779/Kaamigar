@@ -1,12 +1,16 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useTheme } from "@/components/theme/ThemeProvider";
 import { useI18n, Language } from "@/lib/i18n";
-import { Menu, X, Sun, Moon, LogIn } from "lucide-react";
+import { Menu, X, Sun, Moon, LogIn, ChevronDown } from "lucide-react";
 
-interface NavbarProps { onBookClick: () => void; onJoinProClick: () => void; onLoginClick?: () => void; }
+interface NavbarProps {
+  onBookClick: () => void;
+  onJoinProClick: () => void;
+  onLoginClick?: () => void;
+}
 
 export function Navbar({ onBookClick, onJoinProClick, onLoginClick }: NavbarProps) {
   const [scrolled, setScrolled] = useState(false);
@@ -15,7 +19,7 @@ export function Navbar({ onBookClick, onJoinProClick, onLoginClick }: NavbarProp
   const { lang, setLang, t } = useI18n();
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 20);
+    const handleScroll = () => setScrolled(window.scrollY > 12);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -25,43 +29,110 @@ export function Navbar({ onBookClick, onJoinProClick, onLoginClick }: NavbarProp
     { name: t("nav.services"), href: "#services" },
     { name: t("nav.howItWorks"), href: "#how-it-works" },
     { name: t("nav.workers"), href: "#for-workers" },
-    { name: t("nav.faq"), href: "#faq" },
   ];
+
   const languages: { code: Language; label: string }[] = [
-    { code: "hi", label: "हिन्दी" }, { code: "en", label: "English" }, { code: "hinglish", label: "Hinglish" },
+    { code: "hi", label: "हिन्दी" },
+    { code: "en", label: "English" },
+    { code: "hinglish", label: "Hinglish" },
   ];
 
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? "bg-white/95 dark:bg-[#0B1325]/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 shadow-md py-2.5" : "bg-white/80 dark:bg-[#0B1325]/80 backdrop-blur-sm py-3.5 border-b border-slate-100 dark:border-slate-900"}`}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-2.5 group">
-          <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-brand-orange to-amber-500 flex items-center justify-center shadow-md text-white font-black text-xl group-hover:scale-105 transition-transform">क</div>
-          <div className="flex flex-col">
-            <span className="text-xl font-extrabold tracking-tight text-slate-900 dark:text-white flex items-center gap-1.5">KAAMIGAR <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-orange-100 dark:bg-orange-950/80 text-brand-orange border border-orange-200 dark:border-orange-800">कामिगार</span></span>
-            <span className="text-[10px] text-slate-600 dark:text-slate-300 font-medium">{lang === "hi" ? "काम है? कामिगार है।" : t("brand.tagline")}</span>
+    <header
+      className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
+        scrolled
+          ? "border-b border-slate-200/80 bg-white/95 shadow-sm backdrop-blur-xl dark:border-slate-800/80 dark:bg-[#080E1A]/95"
+          : "bg-white/90 backdrop-blur-md dark:bg-[#080E1A]/90"
+      }`}
+    >
+      <div className="mx-auto flex h-[68px] max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+        <Link href="/" className="flex items-center gap-2.5 shrink-0">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand-orange text-lg font-black text-white shadow-sm shadow-orange-500/20">
+            क
+          </div>
+          <div className="leading-none">
+            <div className="flex items-center gap-1.5">
+              <span className="text-[19px] font-black tracking-[-0.03em] text-slate-950 dark:text-white">KAAMIGAR</span>
+              <span className="hidden rounded-md bg-orange-50 px-1.5 py-1 text-[9px] font-extrabold text-brand-orange sm:inline dark:bg-orange-950/50">कामिगार</span>
+            </div>
+            <span className="mt-1 block text-[10px] font-semibold text-slate-500 dark:text-slate-400">{lang === "hi" ? "काम है? कामिगार है।" : "Local help. Made simple."}</span>
           </div>
         </Link>
 
-        <nav className="hidden lg:flex items-center gap-1.5">
-          {navLinks.map((link) => <Link key={link.name} href={link.href} className="text-xs font-bold text-slate-700 dark:text-slate-200 hover:text-brand-orange dark:hover:text-brand-orange px-3.5 py-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800/60 transition-colors">{link.name}</Link>)}
+        <nav className="hidden items-center gap-0.5 lg:flex">
+          {navLinks.map((link) => (
+            <Link
+              key={link.name}
+              href={link.href}
+              className="rounded-lg px-3.5 py-2 text-[13px] font-bold text-slate-600 transition-colors hover:bg-slate-100 hover:text-slate-950 dark:text-slate-300 dark:hover:bg-slate-800/70 dark:hover:text-white"
+            >
+              {link.name}
+            </Link>
+          ))}
         </nav>
 
-        <div className="flex items-center gap-2 sm:gap-3">
-          <div className="flex items-center p-1 rounded-xl bg-slate-100 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700">
-            {languages.map((l) => <button key={l.code} onClick={() => setLang(l.code)} className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${lang === l.code ? "bg-brand-orange text-white shadow-sm" : "text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white"}`}>{l.label}</button>)}
+        <div className="flex items-center gap-2">
+          <div className="hidden items-center gap-1 rounded-lg border border-slate-200 bg-slate-50 p-1 dark:border-slate-700 dark:bg-slate-900 sm:flex">
+            {languages.map((item) => (
+              <button
+                key={item.code}
+                onClick={() => setLang(item.code)}
+                className={`rounded-md px-2 py-1 text-[10px] font-extrabold transition-all ${
+                  lang === item.code
+                    ? "bg-white text-slate-950 shadow-sm dark:bg-slate-700 dark:text-white"
+                    : "text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"
+                }`}
+              >
+                {item.label}
+              </button>
+            ))}
           </div>
-          <button onClick={toggleTheme} className="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:text-brand-orange transition-colors" title={theme === "dark" ? "Light Mode / लाइट मोड" : "Dark Mode / डार्क मोड"} aria-label="Toggle Theme">{theme === "dark" ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-blue-600" />}</button>
-          <button onClick={onLoginClick || onBookClick} className="hidden sm:flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl border border-slate-300 dark:border-slate-700 text-xs font-bold text-slate-800 dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"><LogIn className="w-3.5 h-3.5 text-brand-orange" /><span>{t("nav.login")}</span></button>
-          <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="lg:hidden p-2 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100" aria-label="Open Menu">{mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}</button>
+
+          <button
+            onClick={toggleTheme}
+            className="hidden h-9 w-9 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-600 transition-colors hover:border-slate-300 hover:text-brand-orange dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 sm:flex"
+            title={theme === "dark" ? "Light mode" : "Dark mode"}
+            aria-label="Toggle theme"
+          >
+            {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+          </button>
+
+          <button
+            onClick={onLoginClick || onBookClick}
+            className="hidden items-center gap-1.5 rounded-lg border border-slate-300 px-3.5 py-2 text-[12px] font-extrabold text-slate-800 transition-colors hover:border-slate-400 hover:bg-slate-50 dark:border-slate-700 dark:text-slate-100 dark:hover:bg-slate-800 sm:flex"
+          >
+            <LogIn className="h-3.5 w-3.5" />
+            {t("nav.login")}
+          </button>
+
+          <button
+            onClick={() => setMobileMenuOpen((value) => !value)}
+            className="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-800 dark:border-slate-700 dark:bg-slate-900 dark:text-white lg:hidden"
+            aria-label="Open menu"
+          >
+            {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </button>
         </div>
       </div>
 
       {mobileMenuOpen && (
-        <div className="lg:hidden bg-white dark:bg-[#0B1325] border-b border-slate-200 dark:border-slate-800 px-4 py-5 shadow-2xl animate-in slide-in-from-top-2 duration-200">
-          <div className="space-y-2">{navLinks.map((link) => <Link key={link.name} href={link.href} onClick={() => setMobileMenuOpen(false)} className="block px-3.5 py-2.5 rounded-xl text-sm font-bold text-slate-800 dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-800/80 transition-colors">{link.name}</Link>)}</div>
-          <div className="pt-4 mt-3 border-t border-slate-200 dark:border-slate-800 flex flex-col gap-3">
-            <div className="flex items-center justify-between"><span className="text-xs font-bold text-slate-500">भाषा / Language:</span><div className="flex items-center p-1 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">{languages.map((l) => <button key={l.code} onClick={() => { setLang(l.code); setMobileMenuOpen(false); }} className={`px-3 py-1 rounded-lg text-xs font-bold ${lang === l.code ? "bg-brand-orange text-white" : "text-slate-600 dark:text-slate-300"}`}>{l.label}</button>)}</div></div>
-            <div className="grid grid-cols-2 gap-2 pt-2"><button onClick={() => { setMobileMenuOpen(false); onBookClick(); }} className="w-full py-2.5 rounded-xl bg-brand-orange text-white text-xs font-bold shadow text-center">{t("nav.findKaamigar")}</button><button onClick={() => { setMobileMenuOpen(false); onJoinProClick(); }} className="w-full py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 text-xs font-bold text-center">{t("nav.joinKaamigar")}</button></div>
+        <div className="border-t border-slate-200 bg-white px-4 pb-5 pt-3 shadow-xl dark:border-slate-800 dark:bg-[#080E1A] lg:hidden">
+          <div className="space-y-1">
+            {navLinks.map((link) => (
+              <Link
+                key={link.name}
+                href={link.href}
+                onClick={() => setMobileMenuOpen(false)}
+                className="flex items-center justify-between rounded-xl px-3 py-3 text-sm font-bold text-slate-800 hover:bg-slate-100 dark:text-slate-100 dark:hover:bg-slate-800"
+              >
+                {link.name}
+                <ChevronDown className="h-4 w-4 -rotate-90 text-slate-400" />
+              </Link>
+            ))}
+          </div>
+          <div className="mt-4 grid grid-cols-2 gap-2 border-t border-slate-200 pt-4 dark:border-slate-800">
+            <button onClick={() => { setMobileMenuOpen(false); onBookClick(); }} className="rounded-xl bg-brand-orange py-3 text-xs font-black text-white">{t("nav.findKaamigar")}</button>
+            <button onClick={() => { setMobileMenuOpen(false); onJoinProClick(); }} className="rounded-xl border border-slate-300 py-3 text-xs font-black text-slate-800 dark:border-slate-700 dark:text-white">{t("nav.joinKaamigar")}</button>
           </div>
         </div>
       )}
