@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useEffect, useState } from "react";
 
-type Theme = "dark" | "light";
+type Theme = "light";
 
 interface ThemeContextType {
   theme: Theme;
@@ -11,41 +11,29 @@ interface ThemeContextType {
 }
 
 const ThemeContext = createContext<ThemeContextType>({
-  theme: "dark",
+  theme: "light",
   toggleTheme: () => {},
   setTheme: () => {},
 });
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setTheme] = useState<Theme>("dark");
-  const [mounted, setMounted] = useState(false);
+  const [theme] = useState<Theme>("light");
 
   useEffect(() => {
-    setMounted(true);
-    const saved = localStorage.getItem("kaamigar_theme") as Theme;
-    if (saved === "light" || saved === "dark") {
-      setTheme(saved);
-      document.documentElement.classList.remove("light", "dark");
-      document.documentElement.classList.add(saved);
-    } else {
-      // Default to dark as primary, or detect system preference
-      document.documentElement.classList.add("dark");
-    }
+    localStorage.removeItem("kaamigar_theme");
+    document.documentElement.classList.remove("dark");
+    document.documentElement.classList.add("light");
+    document.documentElement.style.colorScheme = "light";
   }, []);
 
-  const updateTheme = (newTheme: Theme) => {
-    setTheme(newTheme);
-    localStorage.setItem("kaamigar_theme", newTheme);
-    document.documentElement.classList.remove("light", "dark");
-    document.documentElement.classList.add(newTheme);
-  };
-
-  const toggleTheme = () => {
-    updateTheme(theme === "dark" ? "light" : "dark");
+  const setLightTheme = () => {
+    document.documentElement.classList.remove("dark");
+    document.documentElement.classList.add("light");
+    document.documentElement.style.colorScheme = "light";
   };
 
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme, setTheme: updateTheme }}>
+    <ThemeContext.Provider value={{ theme, toggleTheme: setLightTheme, setTheme: setLightTheme }}>
       {children}
     </ThemeContext.Provider>
   );
