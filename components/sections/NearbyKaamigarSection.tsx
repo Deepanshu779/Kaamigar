@@ -40,10 +40,6 @@ export function NearbyKaamigarSection({ onSelectPro, onBookPro }: NearbyKaamigar
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mb-10 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
           <div className="max-w-2xl">
-            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-bold text-slate-600 shadow-sm">
-              <MapPin className="h-3.5 w-3.5 text-brand-orange" />
-              {lang === "en" ? "Available near you" : "आपके आसपास उपलब्ध"}
-            </div>
             <h2 className="text-3xl font-black tracking-tight text-slate-950 sm:text-4xl">
               {lang === "en" ? "Find the right person for the job." : "काम के लिए सही कामिगार खोजें।"}
             </h2>
