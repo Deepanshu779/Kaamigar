@@ -39,14 +39,14 @@ export function Navbar({ onBookClick, onJoinProClick, onLoginClick }: NavbarProp
   return (
     <header className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${scrolled ? "border-b border-slate-200/80 bg-white/95 shadow-sm backdrop-blur-xl" : "bg-white/90 backdrop-blur-md"}`}>
       <div className="mx-auto flex h-[72px] max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        <Link href="/" className="flex h-16 w-[190px] shrink-0 items-center overflow-hidden" aria-label="Kaamigar home">
+        <Link href="/" className="flex h-12 w-[205px] shrink-0 items-center" aria-label="Kaamigar home">
           <Image
-            src="/kaamigar-logo.png"
-            alt="Kaamigar - Trusted People. Local Work. Happier Homes."
-            width={190}
-            height={64}
+            src="/kaamigar-logo-horizontal.png"
+            alt="Kaamigar"
+            width={900}
+            height={236}
             priority
-            className="h-16 w-[190px] object-contain"
+            className="block h-auto max-h-11 w-[185px] object-contain object-left sm:w-[200px]"
           />
         </Link>
 
